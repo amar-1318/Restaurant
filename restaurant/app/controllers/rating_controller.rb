@@ -14,7 +14,7 @@ class RatingController < ApplicationController
     if @rating.valid?
       render json:@rating.as_json(except: [:created_at, :updated_at])
     else
-      render json:{errors: @rating.errors.full_messages}
+      render json:{ errors: @rating.errors.full_messages }
     end
   end
 
