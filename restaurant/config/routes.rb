@@ -9,7 +9,14 @@ Rails.application.routes.draw do
   # root "posts#index"
   post "/user/login", to: "user#login"
   get "/restaurant_detail/max_rating", to: "restaurant_detail#max_avg_rating"
+  get "/restaurant/find", to: "restaurant_detail#find"
+  get "/restaurant/view_restaurants", to: "restaurant_detail#view_restaurants"
+  get "/restaurant/menu", to: "menu#display_restaunt_menu"
+  get "/restaurant/menu/count", to: "restaurant_detail#ordered_count"
+
+  
   get "/menu/item_type", to: "menu#display_types"
+  get "/menu/search_by_menu_name", to: "menu#search_by_menu_name"
 
   get "/cart/pending_cart", to: "cart#pending_cart_worth_1000"
   post "/:id/cart_items", to: "cart#add_cart_items"
@@ -19,6 +26,9 @@ Rails.application.routes.draw do
   get "/order/weekly_best", to: "order#weekly_best"
   get "/cart/:id/order", to: "order#make_order"
   
+  put "/user/update/:id", to:"user#update"
+  put "/menu/update/:id", to:"menu#update"
+
   resources :user
   resources :restaurant_detail
   resources :menu

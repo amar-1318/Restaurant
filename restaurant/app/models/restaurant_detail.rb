@@ -2,7 +2,7 @@ class RestaurantDetail < ApplicationRecord
   belongs_to :user
   has_many :menus
   has_one :city
-
+  validates :user_id, uniqueness:{message: "Owner Already have an account!"}
   validates :name, uniqueness:true
 
   before_create :log_creation
@@ -11,8 +11,8 @@ class RestaurantDetail < ApplicationRecord
 
   def max_avg_rating
     restaurants = []
-    restaurant_5Stars = Menu.group(:restaurant_detail_id).where('rating =?',5).count
-    restaurant_5Stars.each{|key,val|
+    restaurant_5_Stars = Menu.group(:restaurant_detail_id).where('rating =?',5).count
+    restaurant_5_Stars.each{|key,val|
     if val > 0.5 * Menu.where(restaurant_detail_id:key).count  
         restaurants.push([id:key,name:RestaurantDetail.find(key).name,max_star_count:val])
     end

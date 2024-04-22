@@ -15,15 +15,16 @@ class User < ApplicationRecord
   
   validates :password, presence: {message:"cannot be empty"}
 
-  after_create :log_creation
+  after_create :after_create_trigger
   before_update :log_update
   before_destroy :log_deletion
 
   private
-  def log_creation
+  def after_create_trigger
     Rails.logger.info("User #{name} is created at #{created_at}")
+    Cart.create(user_id:id)
   end
-
+  
   def log_update
     Rails.logger.info("User #{name} updated at #{updated_at}. Changes: #{changes}")
   end

@@ -5,7 +5,7 @@ class UserController < ApplicationController
   end
 
   def create
-    @user = User.create(user_signup_params)
+    @user = User.create(user_params)
     if @user.valid?
       render json: @user, each_serializer: UserSerializer
     else
@@ -18,17 +18,22 @@ class UserController < ApplicationController
     if user = User.find_by(email:@user["email"], password:@user["password"])
       render json: user, each_serializer: UserSerializer
     else
-      render json: "Bad credentials!"
+      render json: {errors: "Bad credentials!"}
     end
   end
 
-  def update_user
-    
+  def update
+    @user = User.find_by(id:params[:id])
+    if (@user!=nil) && (@user.update(user_params))
+      render json:{User:@user.as_json(except: [:created_at, :updated_at]), message:"Successfully Updated!"}
+    else
+      render json: {error:"User not found!! "}
+    end
   end
 
   private
-  def user_signup_params
-    params.permit(:id,:name, :address, :contact, :role, :email, :password)
+  def user_params
+    params.permit(:id,:name, :address, :contact, :role, :email, :password, :city_id)
   end
 
   def user_signin_params

@@ -6,13 +6,18 @@ class Rating < ApplicationRecord
 
   validates :rating , numericality: {in: 1..5}
   validates :order_item_id, uniqueness:{message:"Already rated!"}
-  after_create :log_creation
+  after_create :after_create_trigger
 
   private
-  def log_creation
-    Rails.logger.info("Rating for menu #{menu_id} is created at #{created_at}")
-    menu = Menu.find(menu_id)
-    menu.update(rating:(rating+menu.rating)/2)
+  def after_create_trigger
+    ActiveRecord::Base.transaction do
+      Rails.logger.info("Rating for menu #{menu_id} is created at #{created_at}")
+      menu = Menu.find(menu_id)
+      menus = Rating.group(:menu_id).where(menu_id:menu)
+      sum_of_rating = menus.sum(:rating).values[0]
+      total_user_rated = menus.count.values[0]
+      menu.update(rating:((sum_of_rating)/(total_user_rated)))
+    end
   end
 end
 

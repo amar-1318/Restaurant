@@ -12,10 +12,13 @@ class Menu < ApplicationRecord
 
   validates :price, presence: {message:"cannot be empty"}, numericality: {in: 20..1000}
 
+  validate :unique_menu_and_hotel, on: :create
+
   after_create :log_creation
   before_create :log_creation
   before_update :log_update
   
+
   private 
   def log_creation
     Rails.logger.info("Menu named #{item_name}$ successfully created! at #{created_at}")
@@ -24,6 +27,10 @@ class Menu < ApplicationRecord
   def log_update
     Rails.logger.info("Menu #{item_name} updated at #{updated_at}. Changes: #{changes}")
   end
-
-
+  
+  def unique_menu_and_hotel
+    if Menu.exists?(item_name:item_name,restaurant_detail_id:restaurant_detail_id)
+      errors.add(:base,"Item named #{item_name} already exists!!")
+    end
+  end
 end

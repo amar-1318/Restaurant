@@ -5,7 +5,17 @@ class OrderController < ApplicationController
   end
 
   def show
-    render json: Order.find_by(user_id:params[:id]).OrderItems, each_serializer: OrderitemSerializer
+    if !User.exists?(params[:id])
+      render json: {error: "User not exists!!"}
+      return 
+    end
+    @user_order = Order.where(user_id:params[:id])
+    if @user_order.empty?
+      render json: {error: "No orders yet!!"}
+      return
+    end
+    @order = @user_order.collect do |o| [Items: o.OrderItems,Gross_Amount:o.gross_amount] end
+    render json: {User_Orders: @order.as_json(except: [:created_at, :updated_at]) } 
   end
 
   def max_qty_ordered_food
@@ -34,7 +44,7 @@ class OrderController < ApplicationController
           OrderItem.create(order_id:order.id,menu_id:cart[idx]["menu_id"],item_name:Menu.find(cart[idx]["menu_id"]).item_name,item_type:Menu.find(cart[idx]["menu_id"]).item_type,qty:cart[idx]["qty"],total_price:cart[idx]["price"])
         end
         CartItem.delete_by(cart_id: user_cart.id)
-        render json: "Success"
+        render json: {success: "Successfully ordered!!"}
       else
         render json: {errors: cart.errors.full_messages}
       end
