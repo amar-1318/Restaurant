@@ -9,7 +9,7 @@ class MenuController < ApplicationController
     if menu.valid?
       render json: menu , each_serializer: MenuSerializer 
     else
-      render json: {errors: menu.errors.full_messages}
+      render json: { errors: menu.errors.full_messages }
     end
   end
 
