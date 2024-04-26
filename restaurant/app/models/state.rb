@@ -1,13 +1,14 @@
 class State < ApplicationRecord
   has_many :cities
 
-  validates :name, presence: {message:"cannot be empty"},uniqueness:true
+  validates :name, presence: { message: "cannot be empty" }, uniqueness: true
 
   after_create :log_creation
   before_update :log_update
   before_destroy :log_deletion
 
-  private 
+  private
+
   def log_creation
     Rails.logger.info("State #{name} created! at #{created_at}")
   end
@@ -19,5 +20,4 @@ class State < ApplicationRecord
   def log_deletion
     Rails.logger.info("State #{name} is deleted")
   end
-
 end
