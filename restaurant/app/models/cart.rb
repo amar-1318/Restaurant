@@ -2,13 +2,14 @@ class Cart < ApplicationRecord
   has_many :cart_items
   belongs_to :user
 
-  validates :user_id , uniqueness: true
+  validates :user_id, uniqueness: true
 
   after_create :log_creation
   before_update :log_update
   after_destroy :log_deletion
 
-  private 
+  private
+
   def log_creation
     Rails.logger.info("Cart of user #{user_id} created! at #{created_at}")
   end
@@ -20,5 +21,4 @@ class Cart < ApplicationRecord
   def log_deletion
     Rails.logger.info("Cart of user #{user_id} is deleted")
   end
-
 end

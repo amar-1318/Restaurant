@@ -1,9 +1,9 @@
 class RestaurantDetail < ApplicationRecord
   belongs_to :user
   has_many :menus
-  has_one :city
-  validates :user_id, uniqueness:{message: "Owner Already have an account!"}
-  validates :name, uniqueness:true
+  belongs_to :city
+  validates :user_id, uniqueness: { message: "Owner Already have an account!" }
+  validates :name, uniqueness: true
 
   before_create :log_creation
   before_update :log_update
@@ -11,16 +11,17 @@ class RestaurantDetail < ApplicationRecord
 
   def max_avg_rating
     restaurants = []
-    restaurant_5_Stars = Menu.group(:restaurant_detail_id).where('rating =?',5).count
-    restaurant_5_Stars.each{|key,val|
-    if val > 0.5 * Menu.where(restaurant_detail_id:key).count  
-        restaurants.push([id:key,name:RestaurantDetail.find(key).name,max_star_count:val])
-    end
-    }    
+    restaurant_5_Stars = Menu.group(:restaurant_detail_id).where("rating =?", 5).count
+    restaurant_5_Stars.each { |key, val|
+      if val > 0.5 * Menu.where(restaurant_detail_id: key).count
+        restaurants.push([id: key, name: RestaurantDetail.find(key).name, max_star_count: val])
+      end
+    }
     return restaurants
   end
 
-  private 
+  private
+
   def log_creation
     Rails.logger.info("Restaurant #{name} created! at #{created_at}")
   end
@@ -33,4 +34,3 @@ class RestaurantDetail < ApplicationRecord
     Rails.logger.info("Restaurant #{name} is deleted")
   end
 end
-

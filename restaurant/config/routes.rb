@@ -14,20 +14,27 @@ Rails.application.routes.draw do
   get "/restaurant/menu", to: "menu#display_restaunt_menu"
   get "/restaurant/menu/count", to: "restaurant_detail#ordered_count"
 
-  
-  get "/menu/item_type", to: "menu#display_types"
+  get "/menu/item_type/", to: "menu#display_menu_of_item_type"
+  get "/menu/types", to: "menu#display_types"
   get "/menu/search_by_menu_name", to: "menu#search_by_menu_name"
 
   get "/cart/pending_cart", to: "cart#pending_cart_worth_1000"
-  post "/:id/cart_items", to: "cart#add_cart_items"
-  
+  post "/cart/add_cart_items", to: "cart#add_cart_items"
+
   get "/order/max_qty_ordered_food", to: "order#max_qty_ordered_food"
   get "/order/recent_orders", to: "order#recent_orders"
   get "/order/weekly_best", to: "order#weekly_best"
   get "/cart/:id/order", to: "order#make_order"
-  
-  put "/user/update/:id", to:"user#update"
-  put "/menu/update/:id", to:"menu#update"
+  delete "/cart_items/delete", to: "cart#delete"
+  put "/cart/update", to: "cart#update"
+
+  put "/user/update/:id", to: "user#update"
+  put "/menu/update/:id", to: "menu#update"
+
+  get "/menu/display_city_menu", to: "menu#display_city_menu"
+
+  get "/admin/daily_revenue", to: "admin#daily_revenue"
+  get "/admin/weekly_revenue", to: "admin#weekly_revenue"
 
   resources :user
   resources :restaurant_detail
