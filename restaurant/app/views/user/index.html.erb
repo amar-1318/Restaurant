@@ -1,0 +1,48 @@
+<%= stylesheet_link_tag 'users' %>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Restaurant Management System</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+      <center><b><h1>Users</h1></b></center>
+      <br><br>
+      <div class="container" >
+      <table class="table table-hover" > 
+        <thead class="thead-dark">
+          <tr>
+            <th>Sr.</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Contact</th>
+            <th>Role</th>
+            <th>Gender</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.address %></td>
+          <td><%= user.contact %></td>
+          <td><%= user.role %></td>
+          <td><%= user.gender %></td>
+          <td><button class="btn btn-info" onclick="window.location.href='<%= user_path(user) %>';">View</button></td>
+        </tr>
+        <% end %>
+        </tbody>
+      <div>
+      </table>
+
+      <script>
+      </script>
+	</body>
+</html>

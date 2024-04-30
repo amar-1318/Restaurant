@@ -1,6 +1,7 @@
 class Order < ApplicationRecord
-  has_many :OrderItems
+  has_many :order_items
   has_one :payment
+  belongs_to :user
   after_create :log_creation
 
   private

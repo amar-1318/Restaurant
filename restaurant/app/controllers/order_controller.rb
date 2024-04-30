@@ -6,16 +6,17 @@ class OrderController < ApplicationController
 
   def show
     if !User.exists?(params[:id])
-      render json: { error: "User not exists!!" }, status: :not_found
+      @error_message = { error: "User not exists!!" }
       return
     end
     @user_order = Order.where(user_id: params[:id])
     if @user_order.empty?
-      render json: { error: "No orders yet!!" }, status: :not_found
+      @error_message = { error: "No orders yet!!" }
       return
     end
-    @order = @user_order.collect do |o| [Items: o.OrderItems, Gross_Amount: o.gross_amount] end
-    render json: { User_Orders: @order.as_json(except: [:created_at, :updated_at]) }, status: :ok
+    @order = @user_order.collect do |o| [Items: o.order_items, Gross_Amount: o.gross_amount] end
+    @order = @order.as_json
+    render "show"
   end
 
   def max_qty_ordered_food

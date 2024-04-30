@@ -52,9 +52,9 @@ class MenuController < ApplicationController
   def display_menu_of_item_type
     @menus = Menu.joins(:restaurant_detail).where(item_type: params[:item_type]).where(restaurant_detail: { city_id: params[:city_id] }).where(available: true)
     if @menus.present?
-      render json: @menus, each_serializer: MenuSerializer, status: :ok
+      render "display_menu_of_item_type"
     else
-      render json: { errors: "Record not found!!" }, status: :not_found
+      @error_message = { errors: "Record not found!!" }
     end
   end
 

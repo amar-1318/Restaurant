@@ -1,0 +1,106 @@
+head  
+  link rel="stylesheet" href="/customer_dashboard.css"/
+body
+  .row
+    .col-11
+      nav.navbar.navbar-expand-lg.navbar-light.bg-light
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        .collapse.navbar-collapse#navbarTogglerDemo01
+          a.navbar-brand(href="#{customer_dashboard_path}") DineEase
+          ul.navbar-nav.mr-auto.mt-2.mt-lg-0
+            li.nav-item
+              a.nav-link(href="#{customer_dashboard_path}") Home
+            li.nav-item
+              a.nav-link(href="#{customer_dashboard_path}/contact") Contact
+            li.nav-item
+              a.nav-link(href="#{customer_dashboard_path}/about") About 
+            li.nav-item
+              a.nav-link(href="#{order_path}") Orders 
+            li.nav-item
+              a.nav-link(href="#{cart_path}") Cart 
+            | &nbsp;&nbsp;
+            a.nav-link(href="#") 
+              center
+                script(src="https://cdn.lordicon.com/lordicon.js")
+                lord-icon(src="https://cdn.lordicon.com/fmdfxhbt.json" trigger="hover" style="width:40px;height:30px;margin-left:200px")
+          form.form-inline.my-2.my-lg-0
+            input.form-control.mr-sm-2(type="search" placeholder="Search" aria-label="Search") 
+            | &nbsp;&nbsp;
+            button.btn.btn-outline-success.my-2.my-sm-0(type="submit") Search 
+            | &nbsp;&nbsp;
+    .col-1
+      .topnav.float-right.bg-light
+        a.active.nav-link(href="javascript:void(0);", onclick="myFunction()")
+          script src="https://cdn.lordicon.com/lordicon.js"
+          lord-icon[src="https://cdn.lordicon.com/kthelypq.json" trigger="hover" style="width:40px;height:30px"]
+        #myLinks
+          a(href="#{user_path}") <img width="24" height="24" src="https://img.icons8.com/material/24/user-male-circle--v1.png" alt="user-male-circle--v1"/> Profile 
+          a(href="#contact") <img width="24" height="24" src="https://img.icons8.com/material/24/000000/purchase-order--v1.png" alt="purchase-order--v1"/> Orders
+          a(href="#about") <img width="24" height="24" src="https://img.icons8.com/material/24/shopping-cart--v1.png" alt="shopping-cart--v1"/> Cart
+          a(href="/login") <img width="24" height="24" src="https://img.icons8.com/material/24/exit.png" alt="exit"/> Logout
+      javascript:
+        function myFunction() {
+          var x = document.getElementById("myLinks");
+          if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+          }
+        }
+
+
+  / .card-columns
+  /   .card.bg-primary
+  /     .card-body.text-center
+  /        
+  /   .card.bg-warning
+  /     .card-body.text-center
+  /       
+  /   .card.bg-success
+  /     .card-body.text-center
+  /       img[src="https://cdn.dribbble.com/users/1415819/screenshots/4061539/icecream_8.gif" alt="" height="100" width="100"]
+  br 
+  br
+  h2.text-center Restaurants in #{@city.name}
+  br
+  .container(style="display: flex; justify-content: center; ")
+    - @restaurants.each do |restaurant|
+      .container(style="display: flex; justify-content: center;")
+        a(href="#", class="card-link")
+          .card(style="width: 18rem; display: inline-block; margin: 0 10px;")
+            .card-body.text-center
+              h5.card-title #{restaurant.name}
+              h6.card-subtitle.mb-2.text-muted #{restaurant.description}
+              img[src="https://cdn.dribbble.com/users/461802/screenshots/4408316/restaurantanimationdribbble.gif" alt="" height="200px" width="200px"]     
+    
+  br 
+  br 
+  br 
+  br 
+  hr
+  br 
+  br 
+  br
+  .container(style="display: flex; justify-content: center;")
+    a(href="/menu/item_type?item_type=Beverage&city_id=#{@user.city_id}", class="card-link")
+      .card(style="width: 18rem; display: inline-block; margin: 0 10px;")
+        .card-body.text-center
+          h5.card-title Beverages
+          h6.card-subtitle.mb-2.text-muted Liquor & Snacks
+          img[src="https://i.pinimg.com/originals/2b/18/c2/2b18c23e63fe7f3aff9188251b779c73.gif" alt="" height="200px" width="200px"]   
+    a(href="/menu/item_type?item_type=main_course&city_id=#{@user.city_id}" class="card-link")
+      .card(style="width: 18rem; display: inline-block; margin: 0 10px;")
+        .card-body.text-center
+          h5.card-title Main Course
+          h6.card-subtitle.mb-2.text-muted Veg & Non-veg
+          img[src="https://cdn.dribbble.com/users/398490/screenshots/3205669/dinner.gif" alt="" height="200" width="200"]
+    a(href="/menu/item_type?item_type=Desert&city_id=#{@user.city_id}" class="card-link")
+      .card(style="width: 18rem; display: inline-block; margin: 0 10px;")
+        .card-body.text-center
+          h5.card-title Desert
+          h6.card-subtitle.mb-2.text-muted Ice-creams & Pastry
+          img[src="https://cdn.dribbble.com/users/1415819/screenshots/4061539/icecream_8.gif" alt="" height="200" width="200"]
+  br
+  br
+  hr

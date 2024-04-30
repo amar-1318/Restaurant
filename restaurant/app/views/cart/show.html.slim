@@ -1,0 +1,28 @@
+body
+  .container
+    br
+    = link_to "Back", "javascript:history.go(-1)", class: "btn btn-info"
+    br
+    br
+  .container
+    table.table.table-hover 
+      thead
+        tr 
+          th Item name 
+          th Quantity
+          th Price
+          th Restaurant Name
+      tbody
+        - if @error_message
+          tr
+            td.text-center colspan="4" 
+              h5 = @error_message[:empty]
+        - else
+          - @cart_items.each do |item|
+            tr
+              td = Menu.find(item.menu_id).item_name
+              td = item.qty
+              td = item.price 
+              td = RestaurantDetail.find(Menu.find(item.menu_id).restaurant_detail_id).name
+              td  
+                button.btn.btn-success Add

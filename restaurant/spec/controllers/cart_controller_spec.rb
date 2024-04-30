@@ -27,6 +27,7 @@ RSpec.describe CartController, type: :controller do
       expect(response).to have_http_status(:not_found)
       expect(response.body).not_to be_empty
       puts "\n\nResponse Body : #{response.body}"
+      expect(response.body).to eq({ "errors" => "User cart is empty" })
     end
   end
 
