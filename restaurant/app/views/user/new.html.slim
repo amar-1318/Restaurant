@@ -1,0 +1,65 @@
+doctype html
+html
+  head
+    style 
+      | #name_validation {
+      |   color: red;
+      | }
+      | #email_validation {
+      |   color: red;
+      | }
+      | #contact_validation {
+      |   color: red;
+      | }
+      | #password_validation {
+      |   color: red;
+      | }
+  body
+    br
+    div.container
+      div.row
+        div.col-6
+          form action="/users/signup" method="post" onsubmit="return validateForm()" oninput="validateForm()"
+            == csrf_meta_tags
+            div.form-group
+              label for="input_name" Enter name
+              input#input_name type="text" name="name" class="form-control" placeholder="eg. Alex" oninput="validateName()"
+              p#name_validation 
+            div.form-group
+              label for="input_address" Enter Address
+              input#input_address type="text" name="address" class="form-control"  oninput="validateAddress()"
+              p#address_validation 
+            div.form-group
+              label for="gender_select" Select Gender
+              select#gender_select.form-control name="gender"
+                option(value="MALE") Male
+                option(value="FEMALE") Female
+            div.form-group
+              label for="city_select" Select City
+              select#city_select.form-control name="city_id"
+                - @cities.each do |city|
+                  option[value="#{city.id}"] #{city.name}
+            
+            div.form-group
+              label for="input_name" Enter email
+              input#input_email type="email" name="email" class="form-control" placeholder="eg. alex12@gmail.com" oninput="validateEmail()"
+              p#email_validation
+            div.form-group
+              label for="input_name" Enter contact
+              input#input_contact type="text" name="contact" class="form-control" oninput="validateContact()"
+              p#contact_validation
+            div.form-group
+              label for="input_name" Enter password
+              input#input_password type="password" name="password" class="form-control" oninput="validatePassword()"
+              p#password_validation
+            div.form-group
+              label for="role_select" Select Role
+              select#role_select.form-control name="role"
+                option(value="CUSTOMER") Customer
+                option(value="OWNER") Owner
+                option(value="ADMIN") Admin
+            br
+            div.form-group
+                input#input_submit[type="submit" value="Submit" class="form-control btn-info"]
+        div.col-6
+          img[src="https://img.freepik.com/free-vector/get-touch-concept-illustration_114360-2566.jpg?w=740&t=st=1714214194~exp=1714214794~hmac=ca44232fd5d4f52248fc8ce8ac63f48173d83730fd0eff54375ec5c6b2c02229" alt="" width="500px" height="500px"]

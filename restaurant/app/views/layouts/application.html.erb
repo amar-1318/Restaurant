@@ -8,9 +8,12 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" %>
   </head>
 
   <body>
     <%= yield %>
+      <%= javascript_include_tag "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" %>
+      <%= javascript_include_tag '/js/new.js' %>
   </body>
 </html>

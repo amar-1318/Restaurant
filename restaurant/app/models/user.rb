@@ -9,9 +9,9 @@ class User < ApplicationRecord
 
   validates :address, presence: { message: "cannot be empty" }
 
-  # validates :contact, presence: { message: "cannot be empty" }, uniqueness: true
+  validates :contact, presence: { message: "cannot be empty" }, uniqueness: true
 
-  # validates :email, presence: { message: "cannot be empty" }, uniqueness: true
+  validates :email, presence: { message: "cannot be empty" }, uniqueness: true
 
   validates :password, presence: { message: "cannot be empty" }
 

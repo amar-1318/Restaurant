@@ -82,7 +82,7 @@ RSpec.describe MenuController, type: :controller do
       it "returns a not found error" do
         get :search_by_menu_name, params: { item_name: "Chicken", city: city }
         expect(response).to have_http_status(:not_found)
-        expect(JSON.parse(response.body)).to eq({ "errors" => "Record not found!!" })
+        expect(response.body).to eq({ "errors" => "Record not found!!" })
       end
     end
   end

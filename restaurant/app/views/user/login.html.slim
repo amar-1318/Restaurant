@@ -1,0 +1,46 @@
+doctype html
+html
+  head
+    link rel="stylesheet" href="/login.css"/
+    style 
+      | #email_validation {
+      |   color: red;
+      | }
+      | #password_validation {
+      |   color: red;
+      | }
+      | #error_message {
+      |   color: red;
+      | }
+    
+  body  
+    br
+    div.container
+      div.row
+        div.col-6
+          br
+          div.text-center
+            img[src="https://media2.giphy.com/media/rdMYuReB3gY54grNo7/source.gif" alt="" width="400px" height="200px"]
+          br
+          br
+          form action="/login" method="post" onsubmit="return validateLoginForm()" oninput="validateLoginForm()"
+            div.form-group
+              label for="input_name" Enter email
+              input#input_email type="email" name="email" class="form-control" placeholder="eg. alex12@gmail.com" oninput="validateEmail()"
+              p#email_validation
+            div.form-group
+              label for="input_name" Enter password
+              input#input_password type="password" name="password" class="form-control" oninput="validatePassword()"
+              p#password_validation
+            br
+            div.form-group
+                input#input_submit[type="submit" value="Submit" class="form-control btn-info"]
+            p#error_message
+            - if @error_message
+              javascript:
+                document.getElementById("error_message").innerHTML = "*Bad credentials"
+        div.col-6
+          br
+          br
+          br
+          img[src="https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg?w=740&t=st=1714464551~exp=1714465151~hmac=2513b1a9aa11f422df7943ea56dd3dffdb01c1e272adaa56dc68ba5bc5543661" alt="" width="500px" height="500px"]

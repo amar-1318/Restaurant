@@ -20,10 +20,10 @@ class CartController < ApplicationController
     end
     @cart_items = Cart.find_by(user_id: params[:id]).cart_items
     if @cart_items.empty?
-      render json: { empty: "User cart is empty" }, status: :not_found
+      @error_message = { empty: "User cart is empty!!" }
       return
     end
-    render json: @cart_items, each_serializer: CartitemSerializer, status: :ok
+    redirect_to cart_path(params[:id])
   end
 
   def add_cart_items
@@ -81,15 +81,15 @@ class CartController < ApplicationController
   end
 
   def update
-    item = CartItem.find_by(id: params[:item_id])
-    if (params[:qty]).to_i < 0
-      render json: { error: "Quantity must be in between 1..20" }, status: :unprocessable_entity
+    @item = CartItem.find_by(id: params[:item_id])
+    if !@item.present?
+      render json: { error: "Invalid cart item id!!" }, status: :unprocessable_entity
       return
-    elsif (params[:qty]).to_i == 0
-      item.delete
+    end
+    if (params[:qty]).to_i == 0
+      @item.delete
       render json: { deleted: "Item deleted from cart!" }
-    elsif (params[:qty]).to_i > 0 && (params[:qty]).to_i <= 20
-      item.update(qty: (params[:qty]).to_i)
+    elsif @item.update(qty: (params[:qty]).to_i)
       render json: { success: "Quantity successfully updated to #{params[:qty]}" }, status: :ok
     else
       render json: { error: "Quantity must be in between 1..20" }, status: :unprocessable_entity

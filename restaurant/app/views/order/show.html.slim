@@ -1,0 +1,57 @@
+head 
+  / Include SweetAlert CSS
+
+  link rel="stylesheet" href="/order_show.css"/
+  script src="/js/order_show.js" 
+
+body
+.container
+  br
+  = link_to "Back", "javascript:history.go(-1)", class: "btn btn-info"
+  br
+  br
+.container
+  table.table.table-hover 
+    thead
+      tr 
+        th Order Id 
+        th Gross Amount
+        th Status
+        th Time
+        th Detail
+    tbody
+      - if @error_message
+        tr
+          td.text-center colspan="4" 
+            h5 = @error_message[:error]
+      - else
+        - @user_order.each do |order|
+          tr
+            td = order.id
+            td = order.gross_amount
+            td = order.status 
+            td = order.created_at
+            td 
+              .box
+                a [href="#popup-box"; style="color:black; border-radius:50px; background-color:aqua"] View Details
+              #popup-box.modal
+                .content
+                  table
+                    thead 
+                      tr 
+                        th Sr.
+                        th Item name
+                        th Item type
+                        th Quantity
+                        th Price
+                    tbody
+                      - order.order_items.each do |item|
+                        tr
+                          td = item.item_name 
+                          td = item.item_type 
+                          td = item.qty 
+                          td = item.total_price
+                  br
+                  p Total amount = "#{order.gross_amount}"
+                  a href="#" style="position: absolute; top: 10px; right: 10px; color: #fe0606; font-size: 30px; text-decoration: none;"
+                    | &times;

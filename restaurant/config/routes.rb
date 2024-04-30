@@ -6,8 +6,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  # root "posts#index"
-  post "/user/login", to: "user#login"
+  root "user#index"
   get "/restaurant_detail/max_rating", to: "restaurant_detail#max_avg_rating"
   get "/restaurant/find", to: "restaurant_detail#find"
   get "/restaurant/view_restaurants", to: "restaurant_detail#view_restaurants"
@@ -19,7 +18,7 @@ Rails.application.routes.draw do
   get "/menu/search_by_menu_name", to: "menu#search_by_menu_name"
 
   get "/cart/pending_cart", to: "cart#pending_cart_worth_1000"
-  post "/cart/add_cart_items", to: "cart#add_cart_items"
+  post "/cart/add_cart_items/:id", to: "cart#add_cart_items"
 
   get "/order/max_qty_ordered_food", to: "order#max_qty_ordered_food"
   get "/order/recent_orders", to: "order#recent_orders"
@@ -36,6 +35,16 @@ Rails.application.routes.draw do
   get "/admin/daily_revenue", to: "admin#daily_revenue"
   get "/admin/weekly_revenue", to: "admin#weekly_revenue"
 
+  get "/users/signup", to: "user#new"
+  post "/users/signup", to: "user#create"
+  get "/customer_dashboard/:id", to: "dashboard#customer_dashboard", as: "customer_dashboard"
+  get "/owner_dashboard", to: "dashboard#owner_dashboard", as: "owner_dashboard"
+  get "/admin_dashboard", to: "dashboard#admin_dashboard", as: "admin_dashboard"
+  get "/customer_dashboard/:id/about", to: "dashboard#about", as: "about"
+
+  get "/login", to: "user#get_login"
+  post "/login", to: "user#login"
+
   resources :user
   resources :restaurant_detail
   resources :menu
@@ -44,4 +53,5 @@ Rails.application.routes.draw do
   resources :state
   resources :city
   resources :rating
+  resources :customer_dashboard
 end

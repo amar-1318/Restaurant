@@ -1,0 +1,15 @@
+.footers{
+  height: 300px;
+  background-color: rgb(108, 184, 255);
+
+}
+
+#input_email{
+  border-radius: 20px;
+}
+#input_password{
+  border-radius: 20px;
+}
+#input_submit{
+  border-radius: 20px;
+}
