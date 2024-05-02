@@ -14,16 +14,18 @@ class CartController < ApplicationController
   end
 
   def show
-    if !Cart.exists?(user_id: params[:id])
+    @user = User.find(params[:id])
+    @cart = Cart.find_by(user_id: params[:id])
+    if @cart.nil?
       render json: { error: "User cart not found!!" }, status: :not_found
       return
     end
-    @cart_items = Cart.find_by(user_id: params[:id]).cart_items
+    @cart_items = @cart.cart_items
     if @cart_items.empty?
       @error_message = { empty: "User cart is empty!!" }
       return
     end
-    redirect_to cart_path(params[:id])
+    @total_price = @cart_items.sum(:price)
   end
 
   def add_cart_items
@@ -35,7 +37,7 @@ class CartController < ApplicationController
       return
     end
     if menu.restaurant_detail.city_id != User.find(params[:id]).city_id
-      render json: { error: "You can select items from your regions only!" }, status: :unauthorized
+      render json: { error: "You can select items from your regions only!" }
       return
     end
     #============== Restaurant conflict validation =====================
@@ -90,6 +92,7 @@ class CartController < ApplicationController
       @item.delete
       render json: { deleted: "Item deleted from cart!" }
     elsif @item.update(qty: (params[:qty]).to_i)
+      @item.update(price: Menu.find(@item.menu_id).price * params[:qty].to_i)
       render json: { success: "Quantity successfully updated to #{params[:qty]}" }, status: :ok
     else
       render json: { error: "Quantity must be in between 1..20" }, status: :unprocessable_entity

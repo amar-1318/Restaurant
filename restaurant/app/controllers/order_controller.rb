@@ -9,13 +9,12 @@ class OrderController < ApplicationController
       @error_message = { error: "User not exists!!" }
       return
     end
-    @user_order = Order.where(user_id: params[:id])
+    @user_order = Order.where(user_id: params[:id]).order(created_at: :desc)
     if @user_order.empty?
       @error_message = { error: "No orders yet!!" }
       return
     end
     @order = @user_order.collect do |o| [Items: o.order_items, Gross_Amount: o.gross_amount] end
-    @order = @order.as_json
     render "show"
   end
 

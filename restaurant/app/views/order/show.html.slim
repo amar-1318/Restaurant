@@ -2,56 +2,112 @@ head
   / Include SweetAlert CSS
 
   link rel="stylesheet" href="/order_show.css"/
+
   script src="/js/order_show.js" 
 
 body
-.container
-  br
-  = link_to "Back", "javascript:history.go(-1)", class: "btn btn-info"
-  br
-  br
-.container
-  table.table.table-hover 
-    thead
-      tr 
-        th Order Id 
-        th Gross Amount
-        th Status
-        th Time
-        th Detail
-    tbody
-      - if @error_message
-        tr
-          td.text-center colspan="4" 
-            h5 = @error_message[:error]
-      - else
-        - @user_order.each do |order|
+  .container
+    br
+    a.btn.btn-info[href="#{customer_dashboard_path}"] Back
+    br
+    br
+  .container
+    table.table.table-hover 
+      thead
+        tr 
+          th Order Id 
+          th Gross Amount
+          th Status
+          th Date & Time
+          th Detail
+      tbody
+        - if @error_message
           tr
-            td = order.id
-            td = order.gross_amount
-            td = order.status 
-            td = order.created_at
-            td 
-              .box
-                a [href="#popup-box"; style="color:black; border-radius:50px; background-color:aqua"] View Details
-              #popup-box.modal
-                .content
-                  table
-                    thead 
-                      tr 
-                        th Sr.
-                        th Item name
-                        th Item type
-                        th Quantity
-                        th Price
-                    tbody
-                      - order.order_items.each do |item|
-                        tr
-                          td = item.item_name 
-                          td = item.item_type 
-                          td = item.qty 
-                          td = item.total_price
-                  br
-                  p Total amount = "#{order.gross_amount}"
-                  a href="#" style="position: absolute; top: 10px; right: 10px; color: #fe0606; font-size: 30px; text-decoration: none;"
-                    | &times;
+            td.text-center colspan="4" 
+              h5 = @error_message[:error]
+        - else
+          - @user_order.each do |order|
+            tr
+              td = order.id
+              td = order.gross_amount
+              - if order.status == "SUCCESS"
+                td(style="color:green") = order.status 
+              - else 
+                td(style="color:red") = order.status 
+              td = order.created_at.strftime("%Y-%m-%d %H:%M:%S") 
+              td 
+                .box
+                  a [href="#popup-box" onclick="fill_data(#{order.order_items.to_json}, #{order.gross_amount})"] <img width="25" height="25" src="https://img.icons8.com/ios/50/view-details.png" alt="view-details"/>
+                  javascript:
+                    function fill_data(data, gross_amount){
+                      var tbody = document.getElementById("dynamic_data");
+                      while (tbody.firstChild) {
+                          tbody.removeChild(tbody.firstChild);
+                      }
+                      data.forEach(myFunction);   
+                      var newRow = document.createElement("tr");
+                      var order_id = document.createElement("td");
+                      var item_name = document.createElement("td");
+                      var item_type = document.createElement("td");
+                      var gross_amount1 = document.createElement("td");
+                      gross_amount1.textContent = gross_amount
+                      newRow.append(order_id)
+                      newRow.append(item_name)
+                      newRow.append(item_type)
+                      newRow.append(gross_amount1)
+                      gross_amount1.setAttribute("colspan", "4");
+                      tbody.append(newRow)   
+                    }
+                    function myFunction(item, index) { 
+                      console.log(item);
+                      var tbody = document.getElementById("dynamic_data");
+                      var newRow = document.createElement("tr");
+                      tbody.append(newRow)
+
+                      var order_id = document.createElement("td");
+                      order_id.textContent = item.order_id
+
+                      newRow.append(order_id)
+                      tbody.append(newRow)
+                      
+                      var item_name = document.createElement("td");
+                      item_name.textContent = item.item_name
+
+                      newRow.append(item_name)
+                      tbody.append(newRow)
+                      
+                      var item_type = document.createElement("td");
+                      item_type.textContent = item.item_type
+
+                      newRow.append(item_type)
+                      tbody.append(newRow)
+
+                      var price = document.createElement("td");
+                      price.textContent = item.total_price
+                      
+                      newRow.append(price)
+                      tbody.append(newRow)
+
+                      var qty = document.createElement("td");
+                      qty.textContent = item.qty
+
+                      newRow.append(qty)
+                      tbody.append(newRow)   
+                    }
+                #popup-box.modal
+                  .content
+                    table.table.table-striped-lg
+                      thead.table-dark
+                        tr 
+                          th Order No
+                          th Item name
+                          th Item type
+                          th Price
+                          th Quantity
+                      tbody#dynamic_data
+                          
+                      br 
+                      br 
+                    br
+                    a href="#" style="position: absolute; top: 10px; right: 10px; color: #fe0606; font-size: 30px; text-decoration: none;"
+                      | &times;
