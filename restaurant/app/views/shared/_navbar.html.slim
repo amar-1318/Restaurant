@@ -1,8 +1,4 @@
-head
-  link rel="stylesheet" href="/customer_dashboard.css"
-  script(src="/js/cart/show.js") 
-body
-  .row
+.row
     .col-11
       nav.navbar.navbar-expand-lg.navbar-light.bg-light
         button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation")
@@ -35,9 +31,9 @@ body
             | &nbsp;&nbsp;
             | &nbsp;&nbsp;
           form.form-inline.my-2.my-lg-0
-            input.form-control.mr-sm-2(type="search" placeholder="Search" aria-label="Search" id="search_box")
+            input.form-control.mr-sm-2(type="search" placeholder="Search" aria-label="Search")
             | &nbsp;&nbsp;
-            button.btn.btn-outline-success.my-2.my-sm-0(type="button" onclick="doSearch(#{@user.city_id})") Search
+            button.btn.btn-outline-success.my-2.my-sm-0(type="submit") Search 
             | &nbsp;&nbsp;
     .col-1
       .topnav.float-right.bg-light.mt-2
@@ -49,47 +45,3 @@ body
           a(href="#{order_path}") <img width="24" height="24" src="https://img.icons8.com/material/24/000000/purchase-order--v1.png" alt="purchase-order--v1"/> Orders
           a(href="#about") <img width="24" height="24" src="https://img.icons8.com/material/24/shopping-cart--v1.png" alt="shopping-cart--v1"/> Cart
           a(href="/login") <img width="24" height="24" src="https://img.icons8.com/material/24/exit.png" alt="exit"/> Logout
-      javascript:
-        function myFunction() {
-          var x = document.getElementById("myLinks");
-          if (x.style.display === "block") {
-            x.style.display = "none";
-        } else {
-            x.style.display = "block";
-          }
-        }
-  .container
-    #confirm style="display: none;"
-      p Are you sure you want to delete this item from your cart? This action cannot be undone.
-      .close
-        button onclick="deleteCartItem()" Yes
-        button onclick="closeConfirm()" No
-    br
-    h1 My Food Cart
-    br
-    .container
-      - if @error_message
-        h5 = @error_message[:empty]
-      - else
-          - @cart_items.each do |item|
-            .card
-              .card-body(style="background-color:#ebe8e8")
-                p#cart-qty.card-text.float-right Quantity : #{item.qty}
-                h4.card-title = Menu.find(item.menu_id).item_name
-                div.update_qty.float-right
-                  button.btn.btn-success(style="height: 30px; width: 30px;" onclick="decrement_cart_qty(#{item.id})")-
-                  | &nbsp;&nbsp;   
-                  input id="input-qty-#{item.id}" type="number" value="#{item.qty}" min=0 max=20 name="" style="width:32px"  
-                  | &nbsp;&nbsp;  
-                  button.btn.btn-success(style="height: 30px; width: 30px;" onclick="increment_cart_qty(#{item.id})")+
-                br
-                a.card-link href="#" = RestaurantDetail.find(Menu.find(item.menu_id).restaurant_detail_id).name
-                hr 
-                a.card-link.float-right href="#" Price : #{item.price}$
-            br
-
-      .card
-        .card-body
-          p.float-right Total Price : #{@total_price}
-      br
-      button.btn.btn-danger.float-right.mr-3 Checkout

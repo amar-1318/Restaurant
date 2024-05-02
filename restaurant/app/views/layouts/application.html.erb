@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css" rel="stylesheet">
+    <%= stylesheet_link_tag "application",media: 'all', "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" %>
+    <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/toastify-js' %>
   </head>
 
   <body>
+    <% flash.each do |type, message| %>
+      <div class="alert alert-<%= type %>">
+        <%= message %>
+      </div>
+    <% end %>
+
     <%= yield %>
       <%= javascript_include_tag "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" %>
       <%= javascript_include_tag '/js/new.js' %>

@@ -50,6 +50,7 @@ class MenuController < ApplicationController
   end
 
   def display_menu_of_item_type
+    @user = User.find params[:user_id]
     @menus = Menu.joins(:restaurant_detail).where(item_type: params[:item_type]).where(restaurant_detail: { city_id: params[:city_id] }).where(available: true)
     if @menus.present?
       render "display_menu_of_item_type"
