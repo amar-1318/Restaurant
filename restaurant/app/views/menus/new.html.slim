@@ -1,0 +1,54 @@
+head 
+  style 
+    .toast 
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: bold;
+      z-index: 1000;
+
+    .toast-success 
+      background-color: #28a745; 
+
+    .toast-error 
+      background-color: #dc3545;
+
+
+body 
+  a.btn.btn-info.mt-2.ml-2(href="#{owner_dashboard_users_path}") Back
+  .row
+    .col-6
+      br
+      br
+      br
+      center
+        img src="https://img.freepik.com/premium-vector/girl-is-putting-bottles-rack_118167-12307.jpg?w=740" alt="" height="500px" 
+    .col-6
+      - if @restaurant.present? 
+        br
+        br
+        center
+          h2 Add Menu
+        br
+        br
+        .container
+          = form_with url: "/menus", method: :post, class: 'new_menu_form' do |form|
+            = form.text_field :item_name, class: 'form-control', style: 'border-radius:20px', placeholder: 'Enter Item name'
+            br
+            = form.select :item_type, ['Beverage', 'Main Course', 'Desert'], {}, { class: 'form-control', style: 'border-radius:20px' }
+            br
+            = form.text_field :price, type: 'number', class: 'form-control', style: 'border-radius:20px', placeholder: 'Enter Price'
+            br
+            = form.text_field :stock, type: 'number', class: 'form-control', style: 'border-radius:20px', placeholder: 'Enter Stock' 
+            br
+            = form.hidden_field :restaurant_detail_id, value: "#{@restaurant.id}"
+            = form.select :available, [['Available', true], ['un-available', false]], {}, { class: 'form-control', style: 'border-radius:20px' }
+            br 
+            center
+              = form.submit 'Submit', class: 'btn btn-info'
+      - else 
+        h3(style="margin-top:200px; color:red") First you have to add restaurant details !!
+        a.btn.btn-info.btn-lg.mt-2(href="#{new_restaurant_detail_path}") Add restaurant

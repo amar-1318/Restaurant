@@ -1,0 +1,14 @@
+body
+  .container
+    center
+      .card(style="width: 18rem; margin-top:100px")
+      .card-body
+        h5.card-title = @menu.item_name
+        p.card-text = @menu.item_type
+      ul.list-group.list-group-flush
+        li.list-group-item Price: #{@menu.price} $
+        li.list-group-item = @menu.restaurant_detail.name
+      .card-body
+        a.card-link.btn.btn-info(href="#") Add to cart
+        a.card-link.btn.btn-danger(href="#{customer_dashboard_users_path}") Back
+

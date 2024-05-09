@@ -1,0 +1,103 @@
+head 
+  link rel="stylesheet" href="/customer_dashboard.css"
+  script(src="/js/display_menu_of_item_type.js")         
+
+body onload="load_stars(#{@menus.to_json})"
+  .row
+    .col-11
+      nav.navbar.navbar-expand-lg.navbar-light.bg-light
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        .collapse.navbar-collapse#navbarTogglerDemo01
+          a.navbar-brand(href="#{customer_dashboard_users_path(current_user.id)}") DineEase
+          ul.navbar-nav.mr-auto.mt-2.mt-lg-0
+            | &nbsp;&nbsp;
+            | &nbsp;&nbsp;
+            li.nav-item.mt-1
+              a.nav-link(href="#{customer_dashboard_users_path(current_user.id)}") 
+                <img width="17" height="17" src="https://img.icons8.com/ios/50/home--v1.png" alt="home--v1"/> Home
+            | &nbsp;&nbsp;
+            | &nbsp;&nbsp;
+            li.nav-item.mt-1
+              a.nav-link(href="#{customer_dashboard_users_path(current_user.id)}/contact") <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                </svg>  Help
+            | &nbsp;&nbsp;
+            | &nbsp;&nbsp;
+            li.nav-item.mt-1
+              a.nav-link(href="#{customer_dashboard_users_path(current_user.id)}/about")
+                <img src="/icons8-about.gif" height="17px" width="17px"  alt="" srcset=""/> About 
+            | &nbsp;&nbsp; 
+            | &nbsp;&nbsp; 
+            li.nav-item.mt-1
+              a.nav-link(href="#{cart_path(current_user.id)}")
+                <img src="/icons8-cart.gif" height="17px" width="17px" alt="" srcset=""/> Cart 
+            | &nbsp;&nbsp;
+            | &nbsp;&nbsp;
+          form.form-inline.my-2.my-lg-0
+            input.form-control.mr-sm-2(type="search" placeholder="Search" aria-label="Search")
+            | &nbsp;&nbsp;
+            button.btn.btn-outline-success.my-2.my-sm-0(type="submit") Search 
+            | &nbsp;&nbsp;
+    .col-1
+      .topnav.float-right.bg-light.mt-2
+        a.active.nav-link(href="javascript:void(0);", onclick="myFunction()")
+          script src="https://cdn.lordicon.com/lordicon.js"
+          lord-icon[src="https://cdn.lordicon.com/kthelypq.json" trigger="hover" style="width:34px;height:23px;"]
+        #myLinks
+          a(href="#{user_path(current_user.id)}") <img width="24" height="24" src="https://img.icons8.com/material/24/user-male-circle--v1.png" alt="user-male-circle--v1"/> Profile 
+          a(href="#{order_path(current_user.id)}") <img width="24" height="24" src="https://img.icons8.com/material/24/000000/purchase-order--v1.png" alt="purchase-order--v1"/> Orders
+          a(href="#{cart_path(current_user.id)}") <img width="24" height="24" src="https://img.icons8.com/material/24/shopping-cart--v1.png" alt="shopping-cart--v1"/> Cart
+          a(href="#{destroy_user_session_path}") <img width="24" height="24" src="https://img.icons8.com/material/24/exit.png" alt="exit"/> Logout
+      javascript:
+        function myFunction() {
+          var x = document.getElementById("myLinks");
+          if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+          }
+        }
+  
+  div#restaurant_background
+    br
+    h1(style="color:white; margin-left:700px; margin-top:100px; font-size: 3.5em;") #{@restaurant.name}...
+    p(style="color:gray; margin-left:700px; margin-top:10px; font-size: 2.5em;") #{@restaurant.description}
+  div.container
+    br
+    br
+    br
+    table.table.table-hover
+      thead.thead-dark
+        tr
+          th Item Name
+          th Price
+          th Rating
+          th Add to cart 
+      tbody
+        - if @error_message
+          tr
+            td.text-center colspan="4"
+              p = @error_message[:errors]
+        - else
+          - @menus.each do |menu|
+            tr
+              td = menu.item_name
+              td = menu.price 
+              td 
+                span(id="stars-#{menu.id}") Rating:
+              td  
+                button.btn.btn-success(onclick="cart_button(#{menu.id}, #{current_user.id})") Add 
+                - if @error_message
+                  javascript:
+                    alert(@error_message)
+                br
+                br
+                div(id="#{menu.id}" style="display:none")
+                  button.btn.btn-success(style="height:20px width:20px" onclick="decrement(#{menu.id})") -
+                  | &nbsp;&nbsp;  
+                  input id="input-qty-#{menu.id}" type="number" min=1 max=20 name="" value="1" style="width:40px"  
+                  | &nbsp;&nbsp;  
+                  button.btn.btn-success(style="height:20px width:20px" onclick="increment(#{menu.id})") +
+

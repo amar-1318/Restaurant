@@ -1,0 +1,64 @@
+head
+  link rel="stylesheet" href="/login.css"
+body 
+  .container 
+    .row
+      .col-6
+        img src="https://img.freepik.com/free-vector/sign-up-concept-illustration_114360-7965.jpg?t=st=1714807616~exp=1714811216~hmac=195262129007960490cc8480022ab346ad4de2fb5e9fe75af0ac6f7983208419&w=740" alt="" height="650px" width="550px"
+      .col-6
+        br
+        = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+          .field
+            br
+            = f.text_field :name, autofocus: true, autocomplete: "name", class:"form-control input-name", placeholder:"Name", style:"width:500px; border-radius:20px;)"
+            - if resource.errors.has_key?(:name)
+              = content_tag :div, resource.errors[:name].first, class: 'error', style: 'color: red;'
+          .field
+            br
+            = f.email_field :email, autofocus: true, autocomplete: "email", class:"form-control input-email", placeholder:"Email address", style:"width:500px; border-radius:20px;)"
+            - if resource.errors.has_key?(:email)
+              = content_tag :div, resource.errors[:email].first, class: 'error', style: 'color: red;'
+          .field
+            br
+            = f.password_field :password, autocomplete: "new-password", class:"form-control input-password",placeholder:"Password", style:"width:500px; border-radius:20px"
+            - if resource.errors.has_key?(:password)
+              = content_tag :div, resource.errors[:password].first, class: 'error', style: 'color: red;'
+          .field
+            br
+            = f.password_field :password_confirmation, autocomplete: "new-password", class:"form-control input-password",placeholder:"Confirm Password", style:"width:500px; border-radius:20px"
+            - if resource.errors.has_key?(:password_confirmation)
+              = content_tag :div, resource.errors[:password_confirmation].first, class: 'error', style: 'color: red;'
+          .field
+            br
+            = f.text_field :address, autocomplete: "new-address", class:"form-control input-address",placeholder:"Address", style:"width:500px; border-radius:20px"            
+            - if resource.errors.has_key?(:address)
+              = content_tag :div, resource.errors[:address].first, class: 'error', style: 'color: red;'
+          .field
+            br
+            = f.text_field :contact, autocomplete: "new-contact", class:"form-control input-contact",placeholder:"Contact", style:"width:500px; border-radius:20px"            
+            - if resource.errors.has_key?(:contact)
+              = content_tag :div, resource.errors[:contact].first, class: 'error', style: 'color: red;'
+          .field
+            br
+            = f.select :gender, options_for_select([["Select Gender", ""],['Male', 'MALE'], ['Female', 'FEMALE']]), {}, class: "form-select form-control input-gender", style: "width:500px; border-radius:20px"                    
+            - if resource.errors.has_key?(:gender)
+              = content_tag :div, resource.errors[:gender].first, class: 'error', style: 'color: red;'
+          .field
+            br
+            = f.select :city_id, options_for_select([["Select City", ""]] + City.all.map { |city| [city.name, city.id] }), {}, class: "form-select form-control", style: "width:500px; border-radius:20px", id: "city_select"
+            - if resource.errors.has_key?(:city)
+              = content_tag :div, resource.errors[:city].first, class: 'error', style: 'color: red;'
+          .field
+            br
+            = f.select :role, options_for_select([["Select Role", ""],['Customer', 'CUSTOMER'], ['Owner', 'OWNER'], ['Admin', 'ADMIN']]), {}, class: "form-select form-control", style: "width:500px; border-radius:20px"
+            - if resource.errors.has_key?(:role)
+              = content_tag :div, resource.errors[:role].first, class: 'error', style: 'color: red;'
+          .actions
+            br
+            = f.submit "Sign up", class:"btn btn-primary"
+            = render "devise/shared/links"
+          br
+          br
+          br
+
+  = render "application/footer" 

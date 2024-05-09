@@ -1,0 +1,38 @@
+head
+  link rel="stylesheet" href="/login.css"
+body 
+  .container
+    br
+    br
+    br
+    br
+    center
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        .container
+          .row.mt-5
+            .col-6
+              img(src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" alt="" height="400px" width="400px")
+            .col-6
+              h2 Log in
+              .field
+                br
+                = f.email_field :email, autofocus: true, autocomplete: "email", class:"form-control input-email", placeholder:"Email address", style:"width:500px; border-radius:20px;)"
+              .field
+                br
+                = f.password_field :password, autocomplete: "current-password", class:"form-control input-password",placeholder:"Password", style:"width:500px; border-radius:20px"
+                br
+              - if devise_mapping.rememberable?
+                .field
+                  = f.check_box :remember_me
+                  | &nbsp;
+                  = f.label :remember_me
+              .actions
+                = f.submit "Log in", class: "btn btn-primary"
+              = render "devise/shared/links"
+
+  br
+  br
+  br
+  br
+  br
+  = render "application/footer" 

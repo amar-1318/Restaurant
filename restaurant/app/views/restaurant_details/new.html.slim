@@ -1,0 +1,46 @@
+head 
+  script src="/js/restaurant_details/new.js" 
+  style 
+    | #name_validation {
+    |   color: red;
+    | }
+    | #address_validation {
+    |   color: red;
+    | }
+    | #description_validation {
+    |   color: red;
+    | }
+body 
+  a.btn.btn-info.ml-2.mt-2(href="#{owner_dashboard_users_path}") Back
+  .row
+    .col-6
+      br  
+      br
+      br
+      center
+        img src="https://img.freepik.com/premium-vector/chinese-girl-holding-shrimp-salad-mobile-menu-background_689305-169.jpg?w=740" alt="" height="500px" 
+    .col-6
+      br
+      br
+      center
+        h2 Add Restaurant Details
+      br
+      br
+      .container
+        form action="/restaurant_details" method="post" onsubmit="validate_restaurant()"
+          input#input_name.form-control name="name" style="border-radius:20px" placeholder="Enter name of restaurant"
+            p#name_validation 
+          br
+          input#input_description.form-control name="description" style="border-radius:20px" placeholder="Enter Description"
+          p#description_validation 
+          br
+          input#input_address.form-control name="address" style="border-radius:20px" placeholder="Enter address" 
+          p#address_validation 
+          br
+          input type="hidden" name="user_id" value="#{current_user.id}"
+          select.form-control(style="border-radius:20px" name="city_id")
+            - @cities.each do |city|
+              option(value="#{city.id}") = city.name  
+          br 
+          center
+              button.btn.btn-info type="submit" Submit

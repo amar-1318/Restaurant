@@ -1,0 +1,76 @@
+head
+  script src="/js/orders/show.js" 
+body
+  .container
+    br
+    a.btn.btn-info(href="#{customer_dashboard_users_path}") Back
+    br
+    br
+  .container
+    table.table.table-hover 
+      thead
+        tr 
+          th Order Id 
+          th Gross Amount
+          th Status
+          th Date & Time
+          th Detail
+      tbody
+        - if @error_message
+          tr
+            td.text-center(colspan="4")
+              h5 = @error_message[:error]
+        - else
+          - @user_order.each do |order|
+            tr
+              td = order.id
+              td = order.gross_amount
+              - if order.status == "SUCCESS"
+                td(style="color:green") = order.status 
+              - else 
+                td(style="color:red") = order.status 
+              td = order.created_at.strftime("%Y-%m-%d %H:%M:%S") 
+              td 
+                button.btn.btn-info onclick="show_details(#{order.id})" View
+              tr
+                td(colspan="5")
+                  div(id="content-#{order.id}" style="display:none;")
+                    table.table.table-striped 
+                      thead.table-dark
+                        tr  
+                          th Item name 
+                          th Item Type 
+                          th Quantity 
+                          th Total Price
+                          th Rating
+                      tbody 
+                        - order.order_items.each do |item|
+                          tr 
+                            td = item.item_name
+                            td = item.item_type
+                            td = item.qty
+                            td = item.total_price
+                            td
+                              - if @rating = Rating.find_by(order_item_id: item.id)
+                                  span(id="get-stars-#{item.id}")
+                                  javascript:
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                      load_stars(#{@rating.rating}, #{item.id});
+                                    });
+                              - else
+                                span.fa.fa-star-o#star-1(class="stars-#{item.id}", onclick="rating(1, #{item.id} ,#{[order.to_json, order.user_id, item.menu_id]})")
+                                span.fa.fa-star-o#star-2(class="stars-#{item.id}", onclick="rating(2, #{item.id} ,#{[order.to_json, order.user_id, item.menu_id]})")
+                                span.fa.fa-star-o#star-3(class="stars-#{item.id}", onclick="rating(3, #{item.id} ,#{[order.to_json, order.user_id, item.menu_id]})")
+                                span.fa.fa-star-o#star-4(class="stars-#{item.id}", onclick="rating(4, #{item.id} ,#{[order.to_json, order.user_id, item.menu_id]})")
+                                span.fa.fa-star-o#star-5(class="stars-#{item.id}", onclick="rating(5, #{item.id} ,#{[order.to_json, order.user_id, item.menu_id]})")
+
+javascript:
+  function show_details(order_id){
+    var order = document.getElementById(`content-${order_id}`)
+    if (order.style.display == "block"){
+      order.style.display = "none"
+    }
+    else{
+      order.style.display = "block"
+    }
+  }

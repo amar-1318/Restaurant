@@ -1,0 +1,31 @@
+body onload="load_stars(#{@restaurants.to_json})"
+  .container
+    - @restaurants.each do |restaurant|
+      .card.shadow style="width: 68rem; background-color:#bdd6ff; margin-top:30px"
+        .card-body.hover-overlay
+          h3.card-title style="color:black" = restaurant.name
+          button.btn.btn-danger.float-right View
+          br
+          p.card-text style="color:gray" “#{restaurant.description}”
+          span(id="stars-#{restaurant.id}" class="float-right") Rating:
+        ul.list-group.list-group-flush
+          li.list-group-item style="color:red" Owner: #{User.find(restaurant.user_id).name}
+  br
+  br
+javascript:
+  function load_stars(restaurants){
+    for(var i = 0; i<restaurants.length;i++){
+      document.getElementById(`stars-${restaurants[i]["id"]}`).innerHTML = getStars(restaurants[i]["rating"]);
+    }
+  }
+
+  function getStars(rating) {
+    rating = Math.round(rating * 2) / 2;
+    let output = [];
+    for (var i = rating; i >= 1; i--)
+      output.push('<i class="fa fa-star" aria-hidden="true" style="color: black;"></i>&nbsp;');
+    if (i == .5) output.push('<i class="fa fa-star-half-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
+    for (let i = (5 - rating); i >= 1; i--)
+      output.push('<i class="fa fa-star-o" aria-hidden="true" style="color: black;"></i>&nbsp;');
+    return output.join('');
+  }

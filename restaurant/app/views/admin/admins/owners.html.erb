@@ -1,0 +1,37 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Restaurant Management System</title>
+  </head>
+  <body>
+      <center><b><h1>Owners</h1></b></center>
+      <br><br>
+      <div class="container" >
+        <% @users.each do |user| %>
+          <div class="card" style="width: 68rem; background-color:#e8edea">
+            <div class="card-body">
+              <button class="btn btn-info float-right" onclick="window.location.href='<%= user_path(user) %>';">View</button>
+              <h5 class="card-title"><%= user.name %></h5>
+              <p class="card-text"><%= user.address %></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" style="color:green"><%= user.role %></li>
+            </ul>
+          </div>           
+            <br>
+          <% end %>
+      <br>
+      <br>
+        <div class="digg_pagination">
+          <div class="page_info" style="margin-right:50px">
+            <%= page_entries_info @users %>
+          </div>
+          <%= will_paginate @users, :container => false %>
+        </div>
+      <br>
+      </div>
+      <%= render "application/footer" %>
+	</body>
+</html>

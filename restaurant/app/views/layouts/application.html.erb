@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Restaurant</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css" rel="stylesheet">
+    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/toastify-js" %>
+    <style>
+        #flash-messages {
+            position: fixed; /* Ensure the flash messages are fixed in the viewport */
+            top: 20px; /* Adjust this value as needed to position the flash messages */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999; /* Ensure flash messages are displayed above other content */
+        }
+
+    </style>
+  </head>
+  <body>
+    <div id="flash-messages">
+      <% flash.each do |type, msg| %>
+        <% if type == "notice" %>
+          <div class="alert alert-info">
+          <%= msg %>
+        <% elsif type =="alert" %>
+          <div class="alert alert-error">
+          <%= msg %>
+        <% end %>
+        </div>
+    <% end %>
+    </div>
+    <%= yield %>
+      <%= javascript_include_tag "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" %>
+    <script>
+      var flashMessages = document.querySelectorAll('.alert-info');
+      flashMessages.forEach(function(message) {
+        setTimeout(function() {
+          message.remove(); 
+        }, 3000); 
+      });
+    </script>
+  </body>
+</html>

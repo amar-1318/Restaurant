@@ -1,0 +1,26 @@
+body 
+  br
+  br
+  .row 
+    .col-6
+      img src="https://img.freepik.com/free-vector/update-concept-illustration_114360-1742.jpg?t=st=1715069793~exp=1715073393~hmac=ce6213f6e921a56a41c6ec255ba9140a30448c5e9804c8ce28035a6024ac7418&w=740" alt="" height="500px" width="500px"      
+    .col-6
+      center
+        h2 Update Restaurant 
+      br
+      br
+      form action="/restaurant_details/#{@restaurant.id}" method="put"
+        label Name
+        input.form-control name="name" value="#{@restaurant.name}" style="border-radius:20px"
+        br
+        label Description
+        input.form-control name="description" value="#{@restaurant.description}" style="border-radius:20px"
+        br
+        label Address
+        input.form-control name="address" value="#{@restaurant.address}" style="border-radius:20px"
+        br
+        select.form-control(style="border-radius:20px" name="city_id" )
+            - @cities.each do |city|
+              option(value="#{city.id}") = city.name
+        br
+        button.btn.btn-primary.ml-1 type="submit" Update
